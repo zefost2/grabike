@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "574386460359",
+    "firebase_url": "https://vehicleshare-a2c2d.firebaseio.com",
+    "project_id": "vehicleshare-a2c2d",
+    "storage_bucket": "vehicleshare-a2c2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574386460359:android:f0f70c12a46f9d26",
+        "android_client_info": {
+          "package_name": "com.ptit.soa.vehicleshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574386460359-sdeqr85hj5v4n93ag0njahtakv8aik72.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ptit.soa.vehicleshare",
+            "certificate_hash": "6c8524e1dbded209ba1620c5f2dcfa737b999744"
+          }
+        },
+        {
+          "client_id": "574386460359-aoe82moia6etn82hvpjm5msk06gh25a3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdob-Pic5AKeSIR33ZfAa2q1XWzNZcs8k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574386460359-aoe82moia6etn82hvpjm5msk06gh25a3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
