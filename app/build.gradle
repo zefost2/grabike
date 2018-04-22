@@ -1,14 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'MyAndroidKey'
-            keyPassword '12345678@'
-            storeFile file('D:/KeyStores/android.jks')
-            storePassword 'Hello@96'
-        }
-    }
+
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.ptit.soa.vehicleshare"
@@ -22,10 +15,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
-        }
-        debug {
-            signingConfig signingConfigs.config
         }
     }
 }
@@ -39,6 +28,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'com.google.firebase:firebase-core:12.0.1'
-    compile 'com.google.android.gms:play-services-auth:12.0.1'
+    compile 'com.google.firebase:firebase-core:15.0.0'
+    compile 'com.google.firebase:firebase-auth:15.0.0'
+    compile 'com.google.android.gms:play-services-auth:15.0.0'
+    compile 'com.google.firebase:firebase-storage:15.0.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 }
+apply plugin: 'com.google.gms.google-services'
