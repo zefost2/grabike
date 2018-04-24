@@ -1,1 +1,4 @@
-
+/.gradle/
+/.idea/
+/app/app.iml
+/local.properties
