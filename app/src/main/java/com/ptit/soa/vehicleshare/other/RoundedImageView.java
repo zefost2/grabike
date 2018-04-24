@@ -1,4 +1,4 @@
-package com.ptit.soa.vehicleshare.activity.other;
+package com.ptit.soa.vehicleshare.other;
 
 
 import android.annotation.SuppressLint;

@@ -1,4 +1,4 @@
-package com.ptit.soa.vehicleshare.activity.activity;
+package com.ptit.soa.vehicleshare.activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -90,7 +90,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onStop() {
         super.onStop();
-
         if(firebaseAuthListener != null){
             firebaseAuth.removeAuthStateListener(firebaseAuthListener);
         }
@@ -108,6 +107,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void handleSignInResult(GoogleSignInResult result) {
         if(result.isSuccess()){
+            //goMainScreen();
             firebaseAuthWithGoogle(result.getSignInAccount());
         }
         else{

@@ -1,4 +1,4 @@
-package com.ptit.soa.vehicleshare.activity.activity;
+package com.ptit.soa.vehicleshare.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
