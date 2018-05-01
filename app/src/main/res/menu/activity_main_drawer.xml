@@ -5,21 +5,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_find_vehicle"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="Tìm xe" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_vihicle_nearly"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Xe gần đây" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_notification"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Thông báo" />
     </group>
 
     <item android:title="Communicate">

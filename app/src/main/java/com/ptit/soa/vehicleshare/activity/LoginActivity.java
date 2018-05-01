@@ -1,19 +1,22 @@
 package com.ptit.soa.vehicleshare.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,16 +28,14 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.ptit.soa.vehicleshare.R;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
-    private GoogleApiClient googleApiClient;
-
-    private SignInButton signInButton;
-
     public static final int SIGN_IN_CODE = 777;
-
+    private GoogleApiClient googleApiClient;
+    private SignInButton signInButton;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
     private ProgressBar progressBar;
+    private String TAG = "LOG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +49,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
 
         googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
         signInButton = (SignInButton) findViewById(R.id.signInButton);
@@ -66,16 +67,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
-        firebaseAuth = firebaseAuth.getInstance();
-        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
-                    gotoMain();
-                }
-            }
-        };
+        firebaseAuth = FirebaseAuth.getInstance();
+//        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if (user != null) {
+//                    gotoMain();
+//                }
+//            }
+//        };
 
         progressBar = findViewById(R.id.progressBar);
     }
@@ -84,33 +85,43 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onStart() {
         super.onStart();
 
-        firebaseAuth.addAuthStateListener(firebaseAuthListener);
+//        firebaseAuth.addAuthStateListener(firebaseAuthListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if(firebaseAuthListener != null){
-            firebaseAuth.removeAuthStateListener(firebaseAuthListener);
-        }
+//        if (firebaseAuthListener != null) {
+//            firebaseAuth.removeAuthStateListener(firebaseAuthListener);
+//        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == SIGN_IN_CODE){
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
+//        if(requestCode == SIGN_IN_CODE){
+//            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+//            handleSignInResult(result);
+//        }
+        if (requestCode == SIGN_IN_CODE) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e);
+                // ...
+            }
         }
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        if(result.isSuccess()){
-            //gotoMain();
+        if (result.isSuccess()) {
             firebaseAuthWithGoogle(result.getSignInAccount());
-        }
-        else{
+        } else {
             Toast.makeText(this, "Login that bai!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -120,19 +131,40 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         progressBar.setVisibility(View.VISIBLE);
         signInButton.setVisibility(View.GONE);
 
-        AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(),null);
-        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+//        AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(),null);
+//        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//
+//                progressBar.setVisibility(View.GONE);
+//                signInButton.setVisibility(View.VISIBLE);
+//
+//                if(!task.isSuccessful()){
+//                    Toast.makeText(LoginActivity.this, "NOT FIREBASE AUTH", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
-                progressBar.setVisibility(View.GONE);
-                signInButton.setVisibility(View.VISIBLE);
+        AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            gotoMain();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
 
-                if(!task.isSuccessful()){
-                    Toast.makeText(LoginActivity.this, "NOT FIREBASE AUTH", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
+                        }
+
+                        // ...
+                    }
+                });
     }
 
     private void gotoMain() {
