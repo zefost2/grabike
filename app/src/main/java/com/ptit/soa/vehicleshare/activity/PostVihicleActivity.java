@@ -40,15 +40,15 @@ public class PostVihicleActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_vihicle);
-        initComponent();
 
+        initComponent();
+        btnChooseFile = findViewById(R.id.btnChooseFile);
         btnChooseFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImage();
             }
         });
-
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
